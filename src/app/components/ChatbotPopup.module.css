@@ -1,0 +1,466 @@
+/* ChatbotPopup Styles - POS Figma Theme (Indigo/Horizon) */
+
+/* Floating Chat Button */
+.chatButton {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #4318FF;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(67, 24, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chatButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px -5px rgba(67, 24, 255, 0.5);
+    background: #3311CC;
+}
+
+.chatButton.open {
+    transform: rotate(180deg);
+}
+
+/* Popup Container */
+.popupOverlay {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    z-index: 999;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.popupContainer {
+    width: 400px;
+    height: 600px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #E5E7EB;
+}
+
+/* Popup Header - Clean White */
+.popupHeader {
+    background: #FFFFFF;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.headerTitle h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    color: #1B254B;
+}
+
+.headerIcon {
+    font-size: 1.25rem;
+    color: #4318FF;
+    background: #F4F7FE;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: #A3AED0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+    background: #F4F7FE;
+    color: #4318FF;
+}
+
+/* Status Bar */
+.statusBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+    background: #F4F7FE;
+    font-size: 0.75rem;
+    color: #707EAE;
+    font-weight: 500;
+}
+
+.statusDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.statusDot.connected {
+    background: #01B574;
+}
+
+.statusDot.disconnected {
+    background: #EE5D50;
+}
+
+.statusDot.loading {
+    background: #FFB547;
+    animation: pulse 1.5s infinite;
+}
+
+/* Message List */
+.messageList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #FFFFFF;
+}
+
+/* Welcome Screen */
+.welcomeScreen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+}
+
+.welcomeIcon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 6px rgba(67, 24, 255, 0.1));
+}
+
+.welcomeScreen h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1B254B;
+    margin: 0 0 10px 0;
+}
+
+.welcomeScreen p {
+    font-size: 0.9rem;
+    color: #A3AED0;
+    margin: 0 0 24px 0;
+    line-height: 1.6;
+}
+
+.exampleQueries {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.exampleQuery {
+    background: #F4F7FE;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #2B3674;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.exampleQuery:hover {
+    background: #E9EDF7;
+    color: #4318FF;
+    transform: translateX(4px);
+}
+
+/* Message Bubbles */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.assistant {
+    align-self: flex-start;
+}
+
+.messageBubble {
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.message.user .messageBubble {
+    background: #4318FF;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.assistant .messageBubble {
+    background: #F4F7FE;
+    color: #1B254B;
+    border-bottom-left-radius: 4px;
+}
+
+.messageTime {
+    font-size: 0.7rem;
+    color: #A3AED0;
+    margin-top: 6px;
+    padding: 0 4px;
+}
+
+.message.user .messageTime {
+    text-align: right;
+}
+
+/* SQL Container */
+.sqlContainer {
+    margin-top: 12px;
+    background: #111C44;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.sqlHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #0B1437;
+}
+
+.sqlLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #A3AED0;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.copyBtn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.copyBtn:hover {
+    background: #4318FF;
+}
+
+.sqlCode {
+    padding: 14px;
+    font-family: 'DM Mono', 'Menlo', monospace;
+    font-size: 0.8rem;
+    color: #707EAE;
+    background: transparent;
+    border: none;
+}
+
+/* Results Table */
+.resultsContainer {
+    margin-top: 16px;
+}
+
+.resultsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.resultsCount {
+    font-size: 0.75rem;
+    color: #A3AED0;
+    font-weight: 500;
+}
+
+.confidenceBadge {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.confidenceBadge.high {
+    background: #01B574;
+    color: white;
+}
+
+.confidenceBadge.medium {
+    background: #FFB547;
+    color: white;
+}
+
+.confidenceBadge.low {
+    background: #EE5D50;
+    color: white;
+}
+
+.resultsTableWrapper {
+    max-height: 250px;
+    overflow: auto;
+    border: 1px solid #E9EDF7;
+    border-radius: 12px;
+}
+
+.resultsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    background: #FFFFFF;
+}
+
+.resultsTable th {
+    background: #F4F7FE;
+    color: #A3AED0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 14px;
+    font-size: 0.7rem;
+    position: sticky;
+    top: 0;
+}
+
+.resultsTable td {
+    padding: 12px 14px;
+    color: #1B254B;
+    border-bottom: 1px solid #F4F7FE;
+    font-weight: 500;
+}
+
+.resultsTable tbody tr:hover {
+    background: #F4F7FE;
+}
+
+/* Input Area */
+.inputArea {
+    padding: 20px;
+    background: #FFFFFF;
+    border-top: 1px solid #F4F7FE;
+}
+
+.inputContainer {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.queryInput {
+    flex: 1;
+    padding: 14px 20px;
+    background: #F4F7FE;
+    border: none;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    color: #1B254B;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.queryInput:focus {
+    background: #FFFFFF;
+    box-shadow: 0 0 0 2px #4318FF;
+}
+
+.queryInput::placeholder {
+    color: #A3AED0;
+}
+
+.submitBtn {
+    padding: 14px 24px;
+    background: #4318FF;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.submitBtn:hover:not(:disabled) {
+    background: #3311CC;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(67, 24, 255, 0.4);
+}
+
+/* Loading/Error */
+.loadingIndicator {
+    background: #F4F7FE;
+    color: #4318FF;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.spinner {
+    border: 2px solid #E9EDF7;
+    border-top-color: #4318FF;
+}
+
+.errorMessage {
+    background: #FEE2E2;
+    border: none;
+    color: #EE5D50;
+    font-weight: 500;
+}

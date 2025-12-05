@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
+import ChatbotPopup from './components/ChatbotPopup';
 
 // Types
 interface TableSchema {
@@ -11,28 +12,6 @@ interface TableSchema {
     type: string;
     isPrimary: boolean;
   }>;
-}
-
-interface QueryResult {
-  query: string;
-  sql: string;
-  explanation: string;
-  confidence: 'high' | 'medium' | 'low';
-  provider: string;
-  model: string;
-  results: Record<string, unknown>[];
-  rowCount: number;
-  fields: Array<{ name: string }>;
-  executionTime: number;
-}
-
-interface Message {
-  id: string;
-  type: 'user' | 'assistant';
-  content: string;
-  result?: QueryResult;
-  error?: string;
-  timestamp: Date;
 }
 
 interface ConnectionStatus {
@@ -47,33 +26,16 @@ interface ConnectionStatus {
   };
 }
 
-// Example queries for the welcome screen
-const EXAMPLE_QUERIES = [
-  'Show me all tables',
-  'List the first 10 customers',
-  'What are the top selling products?',
-  'Count orders by status',
-];
-
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus | null>(null);
   const [schema, setSchema] = useState<TableSchema[]>([]);
   const [expandedTables, setExpandedTables] = useState<Set<string>>(new Set());
-  const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Check connection on mount
   useEffect(() => {
     checkConnection();
     fetchSchema();
   }, []);
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   const checkConnection = async () => {
     try {
@@ -99,60 +61,6 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = async (query?: string) => {
-    const queryText = query || input.trim();
-    if (!queryText || isLoading) return;
-
-    // Add user message
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: queryText,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const res = await fetch('/api/query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryText }),
-      });
-
-      const data = await res.json();
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: data.success ? data.data.explanation : data.error,
-        result: data.success ? data.data : undefined,
-        error: data.success ? undefined : data.error,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: 'Failed to process query',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
   const toggleTable = (tableName: string) => {
     setExpandedTables((prev) => {
       const next = new Set(prev);
@@ -165,10 +73,6 @@ export default function Home() {
     });
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
-
   const getStatusClass = () => {
     if (!connectionStatus) return 'loading';
     return connectionStatus.database.connected ? 'connected' : 'disconnected';
@@ -176,7 +80,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {/* Sidebar */}
+      {/* Sidebar - Unchanged for portability */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <h1>NLP to SQL</h1>
@@ -236,164 +140,36 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* Main Content Area - Your Product Content Goes Here */}
       <main className={styles.mainContent}>
-        {/* Chat Area */}
-        <div className={styles.chatArea}>
-          {messages.length === 0 ? (
-            <div className={styles.welcomeMessage}>
-              <h2>Query Your Database</h2>
-              <p>
-                Ask questions in plain English and get SQL queries and results
-                instantly. Powered by AI.
-              </p>
-              <div className={styles.exampleQueries}>
-                {EXAMPLE_QUERIES.map((q) => (
-                  <button
-                    key={q}
-                    className={styles.exampleQuery}
-                    onClick={() => handleSubmit(q)}
-                  >
-                    {q}
-                  </button>
-                ))}
+        <div className={styles.placeholderContent}>
+          <div className={styles.placeholderCard}>
+            <span className={styles.placeholderIcon}>🏠</span>
+            <h2>Your Product Dashboard</h2>
+            <p>
+              This is a placeholder for your main product content.
+              The NLP-to-SQL chatbot is accessible via the floating button in the bottom-right corner.
+            </p>
+            <div className={styles.featureList}>
+              <div className={styles.featureItem}>
+                <span>💬</span>
+                <span>Click the purple chat button to open the SQL assistant</span>
+              </div>
+              <div className={styles.featureItem}>
+                <span>📊</span>
+                <span>Use the sidebar to explore database schema</span>
+              </div>
+              <div className={styles.featureItem}>
+                <span>🔮</span>
+                <span>Ask questions in plain English to generate SQL</span>
               </div>
             </div>
-          ) : (
-            messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`${styles.message} ${styles[msg.type]}`}
-              >
-                <div className={styles.messageContent}>
-                  {msg.type === 'user' ? (
-                    msg.content
-                  ) : msg.error ? (
-                    <div className={styles.errorMessage}>{msg.error}</div>
-                  ) : (
-                    <>
-                      <p>{msg.content}</p>
-
-                      {msg.result && (
-                        <>
-                          {/* SQL Display */}
-                          <div className={styles.sqlContainer}>
-                            <div className={styles.sqlHeader}>
-                              <span className={styles.sqlLabel}>
-                                Generated SQL
-                              </span>
-                              <button
-                                className={styles.copyBtn}
-                                onClick={() =>
-                                  copyToClipboard(msg.result!.sql)
-                                }
-                              >
-                                📋 Copy
-                              </button>
-                            </div>
-                            <pre className={styles.sqlCode}>
-                              {msg.result.sql}
-                            </pre>
-                          </div>
-
-                          {/* Results Table */}
-                          {msg.result.results.length > 0 && (
-                            <div className={styles.resultsContainer}>
-                              <div className={styles.resultsHeader}>
-                                <span className={styles.resultsCount}>
-                                  {msg.result.rowCount} rows •{' '}
-                                  {msg.result.executionTime}ms
-                                </span>
-                                <span
-                                  className={`${styles.confidenceBadge} ${styles[msg.result.confidence]
-                                    }`}
-                                >
-                                  {msg.result.confidence} confidence
-                                </span>
-                              </div>
-                              <div className={styles.resultsTableWrapper}>
-                                <table className={styles.resultsTable}>
-                                  <thead>
-                                    <tr>
-                                      {msg.result.fields.map((f) => (
-                                        <th key={f.name}>{f.name}</th>
-                                      ))}
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {msg.result.results
-                                      .slice(0, 50)
-                                      .map((row, i) => (
-                                        <tr key={i}>
-                                          {msg.result!.fields.map((f) => (
-                                            <td key={f.name}>
-                                              {String(
-                                                row[f.name] ?? 'NULL'
-                                              )}
-                                            </td>
-                                          ))}
-                                        </tr>
-                                      ))}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
-                <div className={styles.messageMeta}>
-                  <span>
-                    {msg.timestamp.toLocaleTimeString()}
-                  </span>
-                  {msg.result && (
-                    <span>{msg.result.provider} / {msg.result.model}</span>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
-
-          {isLoading && (
-            <div className={styles.loadingIndicator}>
-              <div className={styles.spinner} />
-              <span>Generating SQL and executing query...</span>
-            </div>
-          )}
-          <div ref={chatEndRef} />
-        </div>
-
-        {/* Input Area */}
-        <div className={styles.inputArea}>
-          <div className={styles.inputContainer}>
-            <input
-              type="text"
-              className={styles.queryInput}
-              placeholder="Ask a question about your data..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isLoading}
-            />
-            <button
-              className={styles.submitBtn}
-              onClick={() => handleSubmit()}
-              disabled={isLoading || !input.trim()}
-            >
-              {isLoading ? (
-                <>
-                  <div className={styles.spinner} />
-                  Processing
-                </>
-              ) : (
-                'Send'
-              )}
-            </button>
           </div>
         </div>
       </main>
+
+      {/* Chatbot Popup - Portable Component */}
+      <ChatbotPopup />
     </div>
   );
 }
