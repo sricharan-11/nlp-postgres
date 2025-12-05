@@ -4,8 +4,8 @@ import { SQLGenerationRequest, SQLGenerationResponse, LLMProvider } from './type
 import { generateSQLWithGemini } from './gemini';
 import { generateSQLWithClaude } from './claude';
 
-// Default provider priority
-const DEFAULT_PROVIDER: LLMProvider = 'gemini';
+// Default provider - can be overridden via LLM_PROVIDER env variable
+const DEFAULT_PROVIDER: LLMProvider = (process.env.LLM_PROVIDER as LLMProvider) || 'gemini';
 
 /**
  * Generate SQL from natural language using the specified or default provider

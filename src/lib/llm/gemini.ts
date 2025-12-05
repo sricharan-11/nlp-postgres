@@ -4,7 +4,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SQLGenerationRequest, SQLGenerationResponse } from './types';
 import { SQL_GENERATION_SYSTEM_PROMPT, buildUserPrompt, parseLLMResponse } from './prompts';
 
-const DEFAULT_MODEL = 'gemini-2.0-flash';
+// Default model - can be overridden via GEMINI_MODEL env variable
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
 let genAI: GoogleGenerativeAI | null = null;
 
@@ -31,8 +32,9 @@ export async function generateSQLWithGemini(
     modelName?: string
 ): Promise<SQLGenerationResponse> {
     const client = getClient();
+    const selectedModel = modelName || DEFAULT_MODEL;
     const model = client.getGenerativeModel({
-        model: modelName || DEFAULT_MODEL,
+        model: selectedModel,
         generationConfig: {
             temperature: 0.1, // Low temperature for more deterministic output
             topP: 0.95,
@@ -63,7 +65,7 @@ export async function generateSQLWithGemini(
             explanation: parsed.explanation,
             confidence: parsed.confidence,
             provider: 'gemini',
-            model: modelName || DEFAULT_MODEL,
+            model: selectedModel,
         };
     } catch (error) {
         if (error instanceof Error) {
