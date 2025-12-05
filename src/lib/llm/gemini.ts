@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SQLGenerationRequest, SQLGenerationResponse } from './types';
 import { SQL_GENERATION_SYSTEM_PROMPT, buildUserPrompt, parseLLMResponse } from './prompts';
 
-const DEFAULT_MODEL = 'gemini-1.5-pro';
+const DEFAULT_MODEL = 'gemini-2.0-flash';
 
 let genAI: GoogleGenerativeAI | null = null;
 
