@@ -4,7 +4,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { SQLGenerationRequest, SQLGenerationResponse } from './types';
 import { SQL_GENERATION_SYSTEM_PROMPT, buildUserPrompt, parseLLMResponse } from './prompts';
 
-const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
+// Default model - can be overridden via CLAUDE_MODEL env variable
+const DEFAULT_MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514';
 
 let client: Anthropic | null = null;
 
@@ -31,6 +32,7 @@ export async function generateSQLWithClaude(
     modelName?: string
 ): Promise<SQLGenerationResponse> {
     const anthropic = getClient();
+    const selectedModel = modelName || DEFAULT_MODEL;
 
     const userPrompt = buildUserPrompt(
         request.naturalLanguageQuery,
@@ -40,7 +42,7 @@ export async function generateSQLWithClaude(
 
     try {
         const message = await anthropic.messages.create({
-            model: modelName || DEFAULT_MODEL,
+            model: selectedModel,
             max_tokens: 1024,
             system: SQL_GENERATION_SYSTEM_PROMPT,
             messages: [
@@ -64,7 +66,7 @@ export async function generateSQLWithClaude(
             explanation: parsed.explanation,
             confidence: parsed.confidence,
             provider: 'claude',
-            model: modelName || DEFAULT_MODEL,
+            model: selectedModel,
         };
     } catch (error) {
         if (error instanceof Error) {
