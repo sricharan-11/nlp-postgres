@@ -5,7 +5,7 @@ import { SQLGenerationRequest, SQLGenerationResponse } from './types';
 import { SQL_GENERATION_SYSTEM_PROMPT, buildUserPrompt, parseLLMResponse } from './prompts';
 
 // Default model - can be overridden via GEMINI_MODEL env variable
-const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-preview-05-20';
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
 let genAI: GoogleGenerativeAI | null = null;
 
