@@ -464,3 +464,241 @@
     color: #EE5D50;
     font-weight: 500;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - Phase 6
+   ======================================== */
+
+/* Tablet Breakpoint (640px - 1024px) */
+@media (max-width: 1024px) {
+    .popupContainer {
+        width: 380px;
+        height: 550px;
+    }
+
+    .chatButton {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+    }
+
+    .queryInput {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+
+    .submitBtn {
+        padding: 12px 20px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Breakpoint (< 640px) - Full Screen Takeover */
+@media (max-width: 640px) {
+    .chatButton {
+        bottom: 16px;
+        right: 16px;
+        width: 56px;
+        height: 56px;
+        font-size: 1.3rem;
+        box-shadow: 0 6px 20px -3px rgba(67, 24, 255, 0.5);
+    }
+
+    .popupOverlay {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: auto;
+        animation: slideUpMobile 0.3s ease-out;
+    }
+
+    @keyframes slideUpMobile {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .popupContainer {
+        width: 100%;
+        height: 85vh;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+        border: none;
+        border-top: 1px solid #E5E7EB;
+    }
+
+    /* Header - Touch friendly */
+    .popupHeader {
+        padding: 16px 20px;
+        min-height: 60px;
+    }
+
+    .headerTitle h3 {
+        font-size: 1rem;
+    }
+
+    .headerIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+
+    .closeButton {
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
+    }
+
+    /* Status Bar */
+    .statusBar {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+
+    /* Message List */
+    .messageList {
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .messageBubble {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+    }
+
+    /* Welcome Screen */
+    .welcomeScreen {
+        padding: 20px;
+    }
+
+    .welcomeIcon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+    }
+
+    .welcomeScreen h4 {
+        font-size: 1.1rem;
+    }
+
+    .welcomeScreen p {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+    }
+
+    .exampleQuery {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* SQL Container */
+    .sqlContainer {
+        border-radius: 10px;
+    }
+
+    .sqlHeader {
+        padding: 10px 12px;
+    }
+
+    .sqlCode {
+        padding: 12px;
+        font-size: 0.75rem;
+        overflow-x: auto;
+    }
+
+    /* Results Table - Horizontal Scroll */
+    .resultsTableWrapper {
+        max-height: 180px;
+        border-radius: 10px;
+    }
+
+    .resultsTable {
+        font-size: 0.75rem;
+        min-width: 400px;
+    }
+
+    .resultsTable th,
+    .resultsTable td {
+        padding: 10px 12px;
+        white-space: nowrap;
+    }
+
+    /* Input Area - Fixed at bottom, touch friendly */
+    .inputArea {
+        padding: 16px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        background: #FFFFFF;
+        border-top: 1px solid #E9EDF7;
+    }
+
+    .inputContainer {
+        gap: 10px;
+    }
+
+    .queryInput {
+        padding: 14px 18px;
+        font-size: 16px;
+        /* Prevents iOS zoom on focus */
+        border-radius: 24px;
+        min-height: 48px;
+    }
+
+    .submitBtn {
+        padding: 14px 20px;
+        min-width: 80px;
+        min-height: 48px;
+        border-radius: 24px;
+        font-size: 0.9rem;
+    }
+
+    /* Loading Indicator */
+    .loadingIndicator {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+    }
+
+    .spinner {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Confidence Badge */
+    .confidenceBadge {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+    }
+
+    /* Message Time */
+    .messageTime {
+        font-size: 0.65rem;
+    }
+}
+
+/* Extra Small Screens (< 375px) */
+@media (max-width: 375px) {
+    .popupContainer {
+        height: 90vh;
+    }
+
+    .submitBtn span {
+        display: none;
+    }
+
+    .submitBtn::after {
+        content: '→';
+        font-size: 1.2rem;
+    }
+
+    .queryInput {
+        font-size: 16px;
+    }
+}

@@ -30,6 +30,7 @@ export default function Home() {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus | null>(null);
   const [schema, setSchema] = useState<TableSchema[]>([]);
   const [expandedTables, setExpandedTables] = useState<Set<string>>(new Set());
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Check connection on mount
   useEffect(() => {
@@ -78,10 +79,33 @@ export default function Home() {
     return connectionStatus.database.connected ? 'connected' : 'disconnected';
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <div className={styles.container}>
-      {/* Sidebar - Unchanged for portability */}
-      <aside className={styles.sidebar}>
+      {/* Hamburger Menu Button (Mobile) */}
+      <button
+        className={styles.hamburgerBtn}
+        onClick={toggleSidebar}
+        aria-label="Toggle menu"
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
+      {/* Backdrop (Mobile) */}
+      <div
+        className={`${styles.sidebarBackdrop} ${sidebarOpen ? styles.visible : ''}`}
+        onClick={closeSidebar}
+      />
+
+      {/* Sidebar */}
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
           <h1>NLP to SQL</h1>
         </div>
